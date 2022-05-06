@@ -1,9 +1,10 @@
 # **DSA-Hw3**
 
 ## **Problem 0 - Proper References**
-- Problem 2-3, 2-4:  
+- Problem 1:  
+  https://alrightchiu.github.io/SecondRound/comparison-sort-merge-sorthe-bing-pai-xu-fa.html
+- Problem 2:  
   https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching-in-matrix/
-- 
 
 
 ## **Problem 1 - Cracking The Interview With How-How!**
@@ -226,6 +227,7 @@ check-map(2D-array Map):
 **step3:** 任一 Map 要先計算前 g rows 每個 column 個別的 hash value， 存於 map_col_hash[M]。  
 **step4:** 對於每個 g rows 都要先以 map_col_hash[M] 計算開頭長度為 h 的 hash value，接著橫向更新長度為 h 的 hash value 並且比對。前 1~g rows 比對完後若沒有檢查出 pattern 則下移一 row，更新 map_col_hash[M] 比對 2~g+1 rows。當比對的過程中有與 pattern 相同的 hash value 就可以提前終止比對，否則持續比對到 N~g-1 rows 比對完才終止。  
 
+`pseudo code`:
 ```C
 h = horizontal length of pattern
 g = vertical length of pattern
@@ -301,6 +303,7 @@ update map_col_hash 的時間複雜度為 $O(M)$。
 **step3:** 任一 Map 要先計算 N rows 每個 column 個別的 hash value， 存於 map_col_hash[M]。  
 **step4:** 先以 map_col_hash[M] 計算開頭長度為 M 的 hash value，接著橫向更新長度為 M 的 hash value 並且比對。當比對的過程中有與 pattern 相同的 hash value 就可以提前終止比對，否則持續比對到橫向所有 hash value 都比對完才終止。  
 
+`pseudo code`:
 ```C
 M = horizontal length of pattern
 N = vertical length of pattern
@@ -357,3 +360,50 @@ check-map(2D-array Map):
 橫向更新長度為 M 的 hash value 並且與 pattern_hash_value 比對的時間複雜度為 $O(M)$。
 
 因此最糟糕的情況下，K 張 Map 橫向都要更新與比對 M 次，時間複雜度為 $O(N*M+M) + O(K*(N*M+(M+M))) = O(K*M*N)$
+
+<br>
+
+
+## **Problem 3 - DSA Founder How-How**
+### 1.  
+依照 **Least Significant Digit(LSD) first sorting**， 依序從個位數到百位數用 counting sort 排序。  
+- 依個位數排序： (73, 4, 184, 504, 76, 47, 299, 9)
+- 依十位數排序： (4, 9, 504, 47, 73, 76, 184, 299)
+- 依百位數排序： (4, 9, 47, 73, 76, 184, 299, 504)
+
+最終排序好的 sequence 為 (4, 9, 47, 73, 76, 184, 299, 504)
+
+
+<br>
+
+
+### 2.
+`human algorithm`:  
+使用 **counting sort** 的 time complexity 為 $O(n)$， space complexity 為 $O(n)$
+
+`pseudo code`:
+```C
+N = number of elements in input array 
+K = total number of possible label value 
+
+void CountingSort(array input, array output, K, N):
+    C[K] is an empty array
+    // initialize C[K]
+    for i = 1 to i = K:
+        C[K] = 0
+    // build C[K] from input array
+    for i = 1 to i = N:
+        C[input[i]] = C[input[i]] + 1
+    // accumulate C[k]
+    for i = 2 to i = K:
+        C[i] = C[i] + C[i-1]
+    // insert vlaue to B[N] step by step
+    for i = N to i = 1:
+        B[C[A[i]]] = A[i]
+        C[A[i]] --
+```
+
+<br>
+
+
+### 3.
