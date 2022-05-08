@@ -67,11 +67,6 @@ int main()
     int *foward_LPS = compute_LPS(foward, reverse, length);
     int *reverse_LPS = compute_LPS(reverse, foward, length);
 
-    // for (int i = 0; i< LPS_length; i++)
-    //     printf("%d ", foward_LPS[i]);
-    // printf("\n");
-    // for (int i = 0; i< LPS_length; i++)
-    //     printf("%d ", reverse_LPS[i]);
 
     if (foward_LPS[LPS_length - 1] + 1 == length)
     {
