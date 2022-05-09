@@ -52,7 +52,7 @@ find-pairs(array A):
 ```
 
 `time complexity`:  
-共分割了 n 次，分割的 time complexity 為 O(n)，共合併了 log(n)次，每次合併平均的 time complexity 為 O(n)，合併的 time complexity 為 nlog(n)，整體 time complexity 為 O(n) + O(nlog(n))
+共分割了 n 次，分割的 time complexity 為 $O(n)$，共合併了 $log(n)$次，每次合併平均的 time complexity 為 $O(n)$，合併的 time complexity 為 $nlog(n)$，整體 time complexity 為 $O(n) + O(nlog(n))$
 
 
 <br>
@@ -77,7 +77,7 @@ Ans: 5,2,4,3
 
 ### 5.
 `human algorithm`:   
-上述 pseudo code 若觸發了`if (P[i]. difficulty > P[i +1]. difficulty ) -> remove P[i] and P[i+1]` 後 p[i-1] > p[i] 需要待下一次觸發 `while(!Ordered(P))` 才會被檢查到，因此改成在同個 `while (i+1 < len (P))` loop 中可以向前檢查就可以在 O(n) 內達到同樣的效果。
+上述 pseudo code 若觸發了`if (P[i]. difficulty > P[i +1]. difficulty ) -> remove P[i] and P[i+1]` 後 p[i-1] > p[i] 需要待下一次觸發 `while(!Ordered(P))` 才會被檢查到，因此改成在同個 `while (i+1 < len (P))` loop 中可以向前檢查就可以在 $O(n)$ 內達到同樣的效果。
 
 `pseudo code`:
 ```C
@@ -386,7 +386,7 @@ check-map(2D-array Map):
 N = number of elements in input array 
 K = total number of possible label value 
 
-void CountingSort(array input, array output, K, N):
+CountingSort(array input, array output, K, N):
     C[K] is an empty array
     // initialize C[K]
     for i = 1 to i = K:
@@ -397,13 +397,115 @@ void CountingSort(array input, array output, K, N):
     // accumulate C[k]
     for i = 2 to i = K:
         C[i] = C[i] + C[i-1]
-    // insert vlaue to B[N] step by step
+    // insert vlaue to output[N] step by step
     for i = N to i = 1:
-        B[C[A[i]]] = A[i]
-        C[A[i]] --
+        output[C[input[i]]] = input[i]
+        C[input[i]] --
+    return output
 ```
 
 <br>
 
 
 ### 3.
+`human algorithm`:  
+使用一個 stack，當 stack 為空時，push s[i] 進入 stack，當 stack 不為空時，比較 s[i] 與 stack.top，若 s[i] > stack.top，依照本題性質， s[i+1] ~ s[N]必不小於 stack.top，表示 stack.top 為當前最小值，便把 stack.top pop 出來排進 array 裡；若 s[i] <= stack.top，則 push s[i] 進入 stack。 最終處理完 s[1] ~ s[N] 後，將 stack 中的元素依序 pop 出來排進 array。
+
+
+`pseudo code`:
+```C
+
+stack is an empty stack
+N is length of sequence
+
+Sort(array s):
+    k = 1
+    for i = i to i = N:
+        if stack is empty:
+            stack.push(s[i])
+        else:
+            while(stack is not empty and s[i] > stack.top):
+                s[k] = stack.pop
+                k += 1
+            stack.push(s[i])
+    // insert remain element to array s
+    while(stack is not empty):
+        s[k] = stack.pop
+        k += 1 
+    return s
+```
+
+`complexity`:  
+對於每個 element 都會經歷一次 stack.push 與一次 stack.pop，因此 time complexity 為 $O(N)$， stack 最多會用到 N 個額外的空間存 elements，因此 space complexity 為 $O(N)$
+
+
+<br>
+
+
+### 4.
+`human algorithm`:  
+使用兩個 stacks， 並且維護這兩個 stacks 的關係為: 當兩 stacks 都不為空時必須維持 stack_1.top < stack_2.top。首先 push s[1] 進 stack_1，接下來若 s[i] <= stack_1.top，則 push s[i] 進 stack1；若 s[i] > stack_1.top，依照此題性質，s[i+1] ~ s[N] 都不會比 s[i] 大，將 push s[i] 進 stack_2，如此處理完s[1]~s[N] 後兩 stacks 都會呈遞增排列，再將兩 stack 中的 elements 依大小由小到大排入 array。
+
+`pseudo code`:
+
+```C
+stack_1 and stack_2 are empty stacks
+N is length of sequence
+
+Sort(array s):
+    stack_1.push(s[1])
+    for i = 2 to i = N:
+        if s[i] > stack_1.top:
+            stack_2.push(s[i])
+        else:
+            stack_1.push(s[i])
+    k = 1
+    while (k<=N):
+        if stack_1 is empty:
+            s[k] = stack_2.pop
+        else if stack_2 is empty:
+            s[k] = stack_1.pop
+        else if stack_1.top < stack_2.top
+            s[k] = stack_1.pop
+        else
+            s[k] = stack_2.pop
+        k += 1
+    return s
+```
+
+`complexity`:   
+對於每個 element 都會經歷一次 stack.push 與一次 stack.pop，因此 time complexity 為 $O(N)$， 2 個 stacks 最多會用到 N 個額外的空間存所有 elements，因此 space complexity 為 $O(N)$。
+
+
+<br>
+
+
+### 5.
+`human algorithm`:
+使用 K-1 個 stacks， 並且維護這 K-1 個 stacks 的關係為: 當這 K-1 個 stacks 都不為空時必須維持 stack_1.top < stack_2.top < ... < stack_K-1.top 。首先 push s[1] 進 stack_1，接下來從 j = 1 到 j = K-1 依序搜尋，若 s[i] <= stack_j.top 或 stack_j為空，則 push s[i] 進 stack_j，如此處理完s[1]~s[N] 後這 K-1 個 stacks 都會呈遞增排列，再將這 K-1 個 stacks 中的 elements 依大小由小到大排入 array。
+
+```C
+stack_1, stack_2, ... stack_K-1 are empty stacks
+N is length of sequence
+
+Sort(array s):
+    stack_1.push(s[1])
+    for i = 2 to i = N:
+        for j = 1 to j = K-1:
+            if stack_j is empty or s[i] <= stack_j.top
+                stack_j.push(s[i]) 
+                break
+    k = 1
+    while (k<=N):
+        min = inf, minIdx = 0 
+        for j = 1 to j = K-1:
+            if stack_j is not empty and stack_j.top < min:
+                min = stack_j.top
+                min_Idx = j
+        s[k] = stack_minIdx.pop
+        k += 1
+    return s
+```
+
+`complexity`:   
+對於每個 element 經歷一次 stack.push 與一次 stack.pop 最多都會經過 K-1次的比較，因 K 為一常數，因此 time complexity 為 $O(KN) = O(N)$， K-1 個 stacks 最多會用到 N 個額外的空間存所有 elements，因此 space complexity 為 $O(N)$。
