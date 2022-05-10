@@ -7,9 +7,8 @@
 typedef struct disjointSet
 {
     // TODO: Determine fields to use by your method
-    char name[13];
     int rootHash;
-    // int rank;
+    int rank;
 } DisjointSet;
 
 DisjointSet ds[1 << 24];
@@ -41,7 +40,6 @@ void makeset(const char *s)
     // TODO: Initialize a set with hash value
     int myHash = hash(s);
     ds[myHash].rootHash = myHash;
-    strcpy(ds[myHash].name, s);
 }
 
 inline void static init(const char *s)
@@ -54,6 +52,15 @@ inline void static init(const char *s)
     }
 }
 
+int path_compression(int myHash)
+{
+    if (ds[myHash].rootHash != myHash)
+    {
+        ds[myHash].rootHash = path_compression(ds[myHash].rootHash);
+    }
+    return ds[myHash].rootHash;
+}
+
 int find_set(const char *s)
 {
     init(s);
@@ -61,8 +68,7 @@ int find_set(const char *s)
     // TODO: Implement your find algorithm here
     if (ds[i].rootHash != i)
     {
-        int rootHash = ds[i].rootHash;
-        ds[i].rootHash = find_set(ds[rootHash].name);
+        ds[i].rootHash = path_compression(ds[i].rootHash);
     }
     return ds[i].rootHash; /* something */
 }
@@ -84,22 +90,9 @@ bool same_set(const char *a, const char *b)
 
 void split_string(char **splitStrings, char *input)
 {
-    int j = 0, cnt = 0;
-    for (int i = 0; i <= (strlen(input)); i++)
-    {
-        // if space or NULL found, assign NULL into splitStrings[cnt]
-        if (input[i] == ' ' || input[i] == '\0' )
-        {
-            splitStrings[cnt][j] = '\0';
-            cnt++; // for next word
-            j = 0; // for next word, init index to 0
-        }
-        else
-        {
-            splitStrings[cnt][j] = input[i];
-            j++;
-        }
-    }
+    splitStrings[0] = strtok(input, " ");
+    splitStrings[1] = strtok(NULL, " ");
+    splitStrings[2] = strtok(NULL, " ");
 }
 int main()
 {
@@ -119,11 +112,6 @@ int main()
         scanf ("%[^\n]%*c", input);
         split_string(splitStrings, input);
         bool same = same_set(splitStrings[1], splitStrings[2]);
-
-        // int first_root = ds[hash(splitStrings[1])].rootHash;
-        // int second_root = ds[hash(splitStrings[2])].rootHash;
-        // printf("1: %d, 2: %d\n", first_root, second_root);
-
         if (splitStrings[0][0] == 'g')
         {    
             if (!same)

@@ -1,7 +1,20 @@
-6
-group UJ Anthony
-group Anthony Ivan
-group UJ Kain
-group UJ asd
-test UJ Ivan
-test Anthony asd
+19
+group A B
+group B C
+group C D
+test D A
+group E F
+group F G
+group G H
+test E H
+group I J
+group J K
+group K L
+test I L
+test A E
+test A L
+group Z D
+group Z H
+group Z L
+test A E
+test A L
