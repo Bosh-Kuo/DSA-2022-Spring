@@ -213,8 +213,8 @@ check-map(2D-array Map):
 ### 2.
 由於此題假設 collision不會發生，因此最壞的情況就是 K 張 Map 都沒有出現  desired pattern。  
 計算 pattern_hash_value 的時間複雜度為 $O(h)$。  
-計算 Map 中任一 row 的第一個 map_hash_value 的時間複雜度同樣也是 $O(h)$，在同一個 row 中檢查所有 sub-string 的複雜度為 $O(M)$，最糟糕的情況就是 K 張 Map 的每個 row 都完整檢查過一次，時間複雜度為 $O(K*N*(h+M)) = O(K*N*M)$
-因此最糟糕的情況下，時間複雜度為 $O(h) + O(K*N*M)$
+計算 Map 中任一 row 的第一個 map_hash_value 的時間複雜度同樣也是 $O(h)$，在同一個 row 中檢查所有 sub-string 的複雜度為 $O(M)$，最糟糕的情況就是 K 張 Map 的每個 row 都完整檢查過一次，時間複雜度為 $O(K *\ N *\ (h+M)) = O(K *\ N *\ M)$
+因此最糟糕的情況下，時間複雜度為 $O(h) + O(K *\ N *\ M)$
 
 <br>
 
@@ -283,14 +283,14 @@ check-map(2D-array Map):
 
 ### 4.
 由於此題假設 collision不會發生，因此最糟糕的情況就是 K 張 Map 都沒有出現  desired pattern。  
-建立 pattern_col_hash 的時間複雜度為 $O(g*h)$。  
+建立 pattern_col_hash 的時間複雜度為 $O(g *\ h)$。  
 計算 pattern_hash_value 的時間複雜度為 $O(h)$。  
-建立 map_col_hash 的時間複雜度為 $O(g*M)$。  
+建立 map_col_hash 的時間複雜度為 $O(g *\ M)$。  
 update map_col_hash 的時間複雜度為 $O(M)$。  
 以 map_col_hash[M] 計算開頭長度為 h 的 hash value 的時間複雜度為 $O(h)$。  
 對於每 g rows 橫向更新長度為 h 的 hash value 並且與 pattern_hash_value 比對的時間複雜度為 $O(M)$。
 
-因此最糟糕的情況下，K 張 Map 所有 row 都檢查過一次，時間複雜度為 $O(g*h+h) + O(K*(g*M+N*(M+h+M))) = O(g*h + K*M*N)$
+因此最糟糕的情況下，K 張 Map 所有 row 都檢查過一次，時間複雜度為 $O(g *\ h + h) + O(K *\ (g *\ M + N *\ (M+h+M))) = O(g *\ h + K *\ M *\ N)$
 
 
 <br>
@@ -353,13 +353,13 @@ check-map(2D-array Map):
 
 ### 6.
 由於此題假設 collision不會發生，因此最糟糕的情況就是 K 張 Map 都沒有出現  desired pattern。  
-建立 pattern_col_hash 的時間複雜度為 $O(N*M)$。  
+建立 pattern_col_hash 的時間複雜度為 $O(N *\ M)$。  
 計算 pattern_hash_value 的時間複雜度為 $O(M)$。  
-建立 map_col_hash 的時間複雜度為 $O(N*M)$。  
+建立 map_col_hash 的時間複雜度為 $O(N *\ M)$。  
 計算 map_hash_value 的時間複雜度為 $O(M)$。 
 橫向更新長度為 M 的 hash value 並且與 pattern_hash_value 比對的時間複雜度為 $O(M)$。
 
-因此最糟糕的情況下，K 張 Map 橫向都要更新與比對 M 次，時間複雜度為 $O(N*M+M) + O(K*(N*M+(M+M))) = O(K*M*N)$
+因此最糟糕的情況下，K 張 Map 橫向都要更新與比對 M 次，時間複雜度為 $O(N *\ M+M) + O(K *\ (N *\ M+(M+M))) = O(K *\ M *\ N)$
 
 <br>
 
