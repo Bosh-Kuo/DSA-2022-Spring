@@ -99,3 +99,20 @@ MERGE_HEAP(heap a, heap b):
    Traverse(b, a)
    return a 
 ```
+
+<br>
+
+### 6.
+
+
+<br>
+
+
+## **Problem 2 - Red-Black Tree**
+
+### 1.
+一個 node 有 left child 才可以做 right rotation，有 right child 才可以做 left rotaion，因此一個 node 若為 child node 沒有辦法做 rotation。 一個有 n 個 nodes 的 complete binary tree 會有 $\lfloor \frac{n}{2} \rfloor$ 個 parent nodes， 而最後一個 parent node 有可能只有 left child 或是同時有 left child 和 right child，若最底層的 child node 數 $\mod 2 = 1$ 表示最後一個 parent node 只有 left child 沒有 right child，那麼該 parent node 就無法做 left rotaion。
+
+
+left rotation = $\lfloor \frac{n}{2} - [(n - (2^ {\lfloor log_{2}(n+1) \rfloor} - 1)) \mod 2] \rfloor$  
+right rotation = $\lfloor \frac{n}{2} \rfloor$
