@@ -111,8 +111,51 @@ MERGE_HEAP(heap a, heap b):
 ## **Problem 2 - Red-Black Tree**
 
 ### 1.
-一個 node 有 left child 才可以做 right rotation，有 right child 才可以做 left rotaion，因此一個 node 若為 child node 沒有辦法做 rotation。 一個有 n 個 nodes 的 complete binary tree 會有 $\lfloor \frac{n}{2} \rfloor$ 個 parent nodes， 而最後一個 parent node 有可能只有 left child 或是同時有 left child 和 right child，若最底層的 child node 數 $\mod 2 = 1$ 表示最後一個 parent node 只有 left child 沒有 right child，那麼該 parent node 就無法做 left rotaion。
+每個 left node 可以與其 parent 做 right rotate，每個 right node 可以與其 parent 做 left rotate，只有 root 沒有 parent 可以做 rotation。一個有 n nodes 的 complete binary tree 有 $\lfloor \frac{(n - 1)}{2} \rfloor$ 個 right node， $\lceil \frac{(n - 1)}{2} \rceil$ 個 left node。
 
 
-left rotation = $\lfloor \frac{n}{2} - [(n - (2^ {\lfloor log_{2}(n+1) \rfloor} - 1)) \mod 2] \rfloor$  
-right rotation = $\lfloor \frac{n}{2} \rfloor$
+left rotation = $\lfloor \frac{(n - 1)}{2} \rfloor$  
+right rotation = $\lceil \frac{(n - 1)}{2} \rceil$
+
+<br>
+
+### 2.
+`human alogorithm`:  
+從 binary tree 的 root 開始，若目前所在 node 沒有 left node，便將所在 node 指到right node; 若目前所在 node 有 left node，就做 right rotation， 原本的 left child node 在 right rotate 後便會成為該 node 的 parent node，將目前所在的 node 指到該 node 的 parent node，重複上述步驟直到目前所在 node 沒有 left node。當目前所在 node 為 leaf 時終止。
+由於在一次 right rotation 後 right-going chain 就會只少增加一個 node，因此最多只會呼叫 n-1 次 right rotate，因此 time complexcity 為 $O(n)$
+
+`pseudo code:`
+
+```Python
+Turn-Right-Going-China(Tree T):
+    current = T.root
+    while (current is not leaf):
+        while (current->left is not NIL):
+            RIGHT-ROTATE(current)
+            current = current->p
+        current = current->right
+    return T
+```
+
+<br>
+
+### 3.
+The state is not true.
+當一棵 red black tree 只有 black node 時，無論對任何一點做 RIGHT_ROTAE(T,y) or LEFT_ROTATE(T,y) 都不會影響紅黑樹的性質。
+
+<br>
+
+### 4.
+![](./picture/2-4.jpg)
+
+<br>
+
+### 5.
+![](./picture/2-5.jpg)
+
+<br>
+
+### 6.
+
+![](picture/2-6.jpg)
+因為除了 root node 之外的 insertion 都無法直接插入黑色的 node，否則會破壞到每一個 leaf 經過的 black node 要一樣多的規則，若要使 RB tree 只有 black node，一定要刪除 red node，因此一定的用到 *DELETE* opertation。
