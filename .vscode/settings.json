@@ -4,6 +4,8 @@
         "memory": "c",
         "utility": "c",
         "sstream": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "chrono": "c",
+        "iterator": "c"
     }
 }
