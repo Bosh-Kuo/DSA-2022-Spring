@@ -84,26 +84,95 @@ Ans: $M - N$
 <br>
 
 ### 5.
-由於此題未說明 `insert(value)` 的實做內容，因此假設題目的 insert 函數同課堂講義有實做 heapify 來維持 heap 特性。 MERGE_HEAP(heap a, heap b) 實做將 heap b 的node 逐個使用 insert function 加入 heap a，由於假設 insert 有實做 heapify，因此 heap b 所有 node 加入 heap a 後，heap a 仍是 heap。對於 binary tree 中的任何一個 node， insert 進另一個 heap 的次數不會超過數的高度 $log(N)$，insert 的time complexcity 為 $log(N)$，最糟的狀況下，所有 binary tree 中所有 node 都曾insert 進另一個 heap，time complexcity 為 $O(Nlog^2N)$
+由於此題未說明 `insert(value)` 的實做內容，因此假設題目的 insert 函數同課堂講義有實做 heapify 來維持 heap 性質。 MERGE_HEAP(heap a, heap b) 實做將 heap b 的所有 nodes 逐個使用 insert function 加入 heap a，由於假設 insert 有實做 heapify，因此 heap b 所有 node 加入 heap a 後，heap a 仍是維持 heap 的性質。對於 binary tree 中的任何一個 node， insert 進另一個 heap 的次數不會超過樹的高度 $log(N)$，insert 的time complexcity 為 $log(N)$，最糟的狀況下，binary tree 中所有 nodes 都曾 insert 進另一個 heap，time complexcity 為 $O(Nlog^2N)$
 
 `pseudo code:`
 
 ```Python
-Traverse(node n, heap a):
+Traverse(heap a, node n):
     if n is not  NIL:
-        a.insert(n.val)
-        Traverse(n->left, a)
-        Traverse(n->right, a)
+        a->insert(n->val)
+        Traverse(a, n->left)
+        Traverse(a, n->right)
 
 MERGE_HEAP(heap a, heap b):
-   Traverse(b, a)
+   Traverse(a, b)
    return a 
 ```
 
 <br>
 
 ### 6.
+假設：  
+1 使用講義中的 Tree 法，以 array 儲存每個 element 的 Disjoint-Set 編號。  
+2 假設 UNION(x,y) 實做為 $array[x]$ $= y$
 
+step 1:  
+以長度為 N 的 陣列 stack_array 儲存 N 個 stacks，每個 $stack_i$ 儲存不能與 $strudent_i$ 分在同一個 group 的學生。  
+ 
+step 2:  
+對所有學生執行 MAKE_SET(X_i)，另外執行 MAKE_SET(N+1) 與 MAKE_SET(N+2) 作為 $Group1$ 與 $Group2$。
+
+step 3:  
+建立一個 Empty Queue 儲存待處理的 element index of stack_array 。
+當前欲處理的 stack index 為 $index = dequeue(Queue)$ -> 亦即當前欲處理的 stack 便為 stack = stack_array[index]。  
+由於 stack 儲存的元素 $X$ 代表必須與 index 分在不同 Group 的學生，因此，  
+若 `FIND_SET(X) == X` 就將 X 加入與 index 不同的另一個 Group，並將 X 加入 Queue；  
+若 `FIND_SET(X) == FIND_SET(index)` 則代表無法將所有 dislike-pair 分成兩群，便可以中斷並且output 分群失敗；  
+若 `FIND_SET(X) != FIND_SET(index)` 則代表 X 在前面已經處理過了，可以跳過 X。  
+
+step 4:  
+最終如果成功分群，所有 element 都會在 Set_(N+1) 或 Set_(N+2)中，便可依序 output 每個 element 所在的 Group
+
+```Python
+Size of mutually_dislike array = [M, 2]
+Size of students array = [N]
+stacks_array is an empty array whose size is N to store N empty stacks 
+Set_array is an empty array whose size is N+2 to store the set index of each element
+
+def partition(mutually_dislike, students):
+    # step 1
+    for i = 1 to M:
+        j = mutually_dislike[i][1]
+        k = mutually_dislike[i][2]
+        stacks_array[j].push(k)
+        stacks_array[k].push(j)
+    # step 2
+    for i = 1 to N + 2:
+        MAKE_SET(i)
+    # step 3
+    Queue is an empty Queue
+    for i = 1 to N:
+        if (FIND_SET(i) != i):
+            continue
+        Queue.enqueue(i)
+        while (Queue is not empty):
+            index = Queue.dequeue()
+            if (FIND_SET(index) == index):
+                UNION(index, N+1)
+
+            stack = stacks_array[index]
+            Group = FIND_SET(index)
+            while (stack is not empty):
+                X = stack.pop()
+                if (FIND_SET(X) == X):
+                    Queue.enqueue(X)
+                    targetGroup = Group == N+1 ? N+2 : N+1
+                    UNION(X, targetGroup)
+                elif (FIND_SET(X) == Group):
+                    print("it is not possible to form the two groups as described!")
+                    return
+                else:
+                    continue
+    
+    # step 4
+    for i = 1 to N:
+        group_idx = Set_array[i]
+        if (group_idx == N+1):
+            print(f"student {i} is in Group 1")
+        else
+            print(f"student {i} is in Group 2")
+``` 
 
 <br>
 
