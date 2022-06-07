@@ -1,3 +1,4 @@
+// reference: https://cp-algorithms.com/data_structures/treap.html#implicit-treaps
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
