@@ -6,6 +6,23 @@
         "sstream": "c",
         "typeinfo": "c",
         "chrono": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "__bit_reference": "c",
+        "__node_handle": "c",
+        "atomic": "c",
+        "bitset": "c",
+        "cstddef": "c",
+        "__memory": "c",
+        "limits": "c",
+        "locale": "c",
+        "optional": "c",
+        "ratio": "c",
+        "system_error": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "vector": "c",
+        "__functional_base": "c",
+        "algorithm": "c",
+        "functional": "c"
     }
 }

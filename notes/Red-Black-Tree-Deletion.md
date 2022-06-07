@@ -32,7 +32,7 @@ u直接補上去，因為 root 不會有祖先因此少算一份黑色節點
 <br>
 
 ## **複雜刪除狀況(u and v 皆為黑且 v 不為 root)**
-以下關係都是以 u 補上 v 位置後為基準，並且以 u 為父節點 p 的 left child 舉例，若 u 為父節點 p 的 right child，將下述過程盡向左右顛倒就可以
+以下關係都是以 u 補上 v 位置後為基準，並且以 u 為父節點 p 的 left child 舉例，若 u 為父節點 p 的 right child，將下述過程鏡向左右顛倒就可以
 
 ### **`情況一： u 的兄弟 s 是黑色的，且 s 的右邊小孩 r 為紅色的`**
 ![](pictures/RBTree2.png)
@@ -68,7 +68,8 @@ or
 遞迴處理直到 double black 節點的 parent 為紅色為止。
 
 1. 將 s 變成紅色
-2. 若 p 為紅色，將 p 變成黑色，若 p 為黑色則令 p 為 new u 繼續遞迴處理
+2. 若 p 為紅色，將 p 變成黑色就結束
+3. 若 p 為黑色則令 p 為 new u 繼續遞迴處理
 
 ###  **`情況四： u 的兄弟 s 是紅色的`**
 ![](pictures/RBTree5.png)
